@@ -1,88 +1,26 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useRef, useEffect } from 'react'
 import MainContext from '../MainContext'
+import Message from './Message';
+const MessageBox = () => {
+  const bottomRef = useRef(null);
+  const { messages } = useContext(MainContext);
 
-const Message =({ msg }) => {
-    const { username } = useContext(MainContext);
-    const isUser = username === msg.username;
-    const [date, setDate] = useState("");
+  useEffect(() => {
+    // 👇️ scroll to bottom every time messages change
+    bottomRef.current?.scrollIntoView();
+  }, [messages]);
+  return (
     
-    const dayFormat = (dayNum) => {
-        var day = "";
-        switch (dayNum) {
-            case 0:
-                day="Pazar"
-                break;
-            case 1:
-                day="Pazartesi"
-                break;
-            case 2:
-                day="Salı"
-                break;
-            case 3:
-                day="Çarşamba"
-                break;
-            case 4:
-                day="Perşembe"
-                break;
-            case 5:
-                day="Cuma"
-                break;
-            case 6:
-                day="Cumartesi"
-                break;
-        }
-        if(new Date().getDay()===dayNum){
-            day="Bugün";
-        }
-        return day;
-    }
-    useEffect(() => {
-        if (msg.timestamp) {
-            var dt = new Date(msg.timestamp.toDate())
-            var hour=dt.getHours()<10 ? "0"+dt.getHours():dt.getHours();
-            var min=dt.getMinutes()<10 ? "0"+dt.getMinutes():dt.getMinutes();
-            setDate(dayFormat(dt.getDay())+" " +hour + ":" + min)
-        }
-
-    }, [])
-    if (isUser) {
-        return (
-            <div  className={`message-con message-user`}>
-                <div className='msg-detail'>
-                    {
-                        msg.visible === -1 && <div className='date' style={{ marginBottom: "10px" }}>{dayFormat(new Date().getDay())+" "+new Date().getHours() + ":" + new Date().getMinutes()}</div>
-                    }
-                    <div className='message'>
-                        {msg.text}
-                    </div>
-                </div>
-            </div>
-        )
-    } else {
-        return (
-            <div  className={`message-con`}>
-                {
-                    msg.visible === -1 && <div className='msg-img'>
-                        <img src='https://i2-prod.aberdeenlive.news/incoming/article7374763.ece/ALTERNATES/s615/1_brit4.jpg' alt='yok' />
-                    </div>
-                }
-
-                <div className='msg-detail'>
-                    {
-                        msg.visible === -1 && <div className='username-con'>
-                            <div className='username' >{msg.username}</div>
-                            <div className='date'>{date}</div>
-                        </div>
-                    }
-                    <div className='message' style={{ marginLeft: msg.visible === 1 ? "40px" : "0px" }}>
-
-                        {msg.text}
-                    </div>
-                </div>
-
-            </div>
-        )
-    }
+    <div className='message-box' >
+      
+        {messages.map(({data,id}) => (
+          <Message key={id} msg={data} />
+        ))}
+        
+      <div ref={bottomRef} />
+    </div>
+    
+  )
 }
 
-export default Message
+export default MessageBox
