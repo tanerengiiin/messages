@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import MainContext from '../MainContext'
 
 const Message =({ msg }) => {
+    console.log(msg)
     const { userID,username } = useContext(MainContext);
     const isUser = userID === msg.userID;
     const [date, setDate] = useState("");

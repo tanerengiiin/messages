@@ -29,7 +29,6 @@ function App() {
     // The signed-in user info.
     var user = result.user;
     // ...
-    console.log(user)
     setUserID(user.uid)
     setUsername(user.displayName)
     setPhotoUrl(user.photoURL)
@@ -71,7 +70,7 @@ function App() {
     photoUrl,
     userID
   };
-  if (login) {
+  if (messages.length>1) {
     return (
       <div className="App">
         <MainContext.Provider value={data}>
