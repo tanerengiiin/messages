@@ -16,6 +16,7 @@ function App() {
   const [photoUrl,setPhotoUrl]=useState("");
   const [userID,setUserID]=useState("");
   useEffect(() => {
+    setLogin(false)
     var provider = new firebase.auth.GoogleAuthProvider();
     firebase.auth()
   .signInWithPopup(provider)
@@ -28,6 +29,7 @@ function App() {
     // The signed-in user info.
     var user = result.user;
     // ...
+    console.log(user)
     setUserID(user.uid)
     setUsername(user.displayName)
     setPhotoUrl(user.photoURL)
@@ -36,6 +38,8 @@ function App() {
         setMessages(snapshot.docs.map(doc => ({id:doc.id ,data:doc.data()})))
         // setMessages(snapshot.docs.map)
       })
+    setLogin(true)
+
   }).catch((error) => {
     // Handle Errors here.
     var errorCode = error.code;
@@ -67,7 +71,7 @@ function App() {
     photoUrl,
     userID
   };
-  if (messages.length > 1) {
+  if (login) {
     return (
       <div className="App">
         <MainContext.Provider value={data}>
