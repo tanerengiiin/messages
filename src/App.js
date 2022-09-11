@@ -28,7 +28,6 @@ function App() {
     // The signed-in user info.
     var user = result.user;
     // ...
-    console.log(user)
     setUserID(user.uid)
     setUsername(user.displayName)
     setPhotoUrl(user.photoURL)
