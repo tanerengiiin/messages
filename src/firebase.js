@@ -8,7 +8,7 @@ import "firebase/firestore";
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_FIREBASE_API,
-  authDomain: "message-64c8d.firebaseapp.com",
+  authDomain: "https://tanerengiiin.github.io/messages/",
   projectId: "message-64c8d",
   storageBucket: "message-64c8d.appspot.com",
   messagingSenderId: "915101468513",
