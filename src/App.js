@@ -39,6 +39,7 @@ function App() {
     // Handle Errors here.
     var errorCode = error.code;
     var errorMessage = error.message;
+    console.log(error.message)
     // The email of the user's account used.
     var email = error.email;
     // The firebase.auth.AuthCredential type that was used.
@@ -56,7 +57,41 @@ function App() {
   //       // setMessages(snapshot.docs.map)
   //     })
   // },[]);
+  const loginUser=()=>{
+    var provider = new firebase.auth.GoogleAuthProvider();
+    firebase.auth().signInWithRedirect(provider);
+    firebase.auth()
+  .getRedirectResult()
+  .then((result) => {
+    if (result.credential) {
+      /** @type {firebase.auth.OAuthCredential} */
+      var credential = result.credential;
 
+      // This gives you a Google Access Token. You can use it to access the Google API.
+      var token = credential.accessToken;
+      // ...
+    }
+    // The signed-in user info.
+    var user = result.user;
+    setUserID(user.uid)
+    setUsername(user.displayName)
+    setPhotoUrl(user.photoURL)
+    db.collection("messages").orderBy('timestamp')
+      .onSnapshot(snapshot => {
+        setMessages(snapshot.docs.map(doc => ({id:doc.id ,data:doc.data()})))
+        // setMessages(snapshot.docs.map)
+      })
+  }).catch((error) => {
+    // Handle Errors here.
+    var errorCode = error.code;
+    var errorMessage = error.message;
+    // The email of the user's account used.
+    var email = error.email;
+    // The firebase.auth.AuthCredential type that was used.
+    var credential = error.credential;
+    // ...
+  });
+  }
   const data = {
     input,
     setInput,
@@ -69,6 +104,7 @@ function App() {
   if (messages.length>1) {
     return (
       <div className="App">
+        <div onClick={loginUser}> login</div>
         <MainContext.Provider value={data}>
           <Header />
           <MessageBox />
@@ -78,7 +114,12 @@ function App() {
       </div>
     )
   } else {
-    return <div>Yükleniyor...</div>
+    return (
+      <div>
+      <div onClick={loginUser}> login</div>
+      <div>Yükleniyor...</div>
+      </div>
+    )
   }
 
 }
