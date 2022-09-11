@@ -16,11 +16,8 @@ function App() {
   const [photoUrl,setPhotoUrl]=useState("");
   const [userID,setUserID]=useState("");
   useEffect(() => {
-    setLogin(false)
     var provider = new firebase.auth.GoogleAuthProvider();
-    firebase.auth()
-  .signInWithPopup(provider)
-  .then((result) => {
+    firebase.auth().signInWithPopup(provider).then((result) => {
     /** @type {firebase.auth.OAuthCredential} */
     var credential = result.credential;
 
@@ -37,7 +34,6 @@ function App() {
         setMessages(snapshot.docs.map(doc => ({id:doc.id ,data:doc.data()})))
         // setMessages(snapshot.docs.map)
       })
-    setLogin(true)
 
   }).catch((error) => {
     // Handle Errors here.
